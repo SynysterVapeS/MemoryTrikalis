@@ -24,14 +24,9 @@ public class Memory extends JFrame implements ActionListener {
     JPanel[] panels = new JPanel[rows * columns];
     JButton[] buttons = new JButton[rows * columns];
     ArrayList<ImageIcon> images = new ArrayList<ImageIcon>();
-    private ArrayList<ImageIcon> imagine = new ArrayList<ImageIcon>();
+    private ArrayList<ImageIcon> imagine = new ArrayList<ImageIcon>();       // used this as an image holder to compare the first 2 elements every time we open a 3rd image
 
-
-    public boolean exists(int x){
-        return true;
-    }
-
-    ArrayList<Integer> openCards = new ArrayList<Integer>();
+    ArrayList<Integer> openCards = new ArrayList<Integer>();                // counter of the cards player opens so that we know when they open a 3rd card every time
 
 
     public Memory() {
@@ -40,10 +35,10 @@ public class Memory extends JFrame implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(rows, columns));
 
-        for (int i = 0; i < noOfImages; i++) {      // used noOfImages instead of panels.length
+        for (int i = 0; i < noOfImages; i++) {                                       // used noOfImages instead of panels.length
             ImageIcon image1 = new ImageIcon("src//" + (i + 1) + ".jpg");
-            ImageIcon image2 = image1;
-            images.add(image1); // had to add "src//" and remove "image"
+            ImageIcon image2 = image1;                                               // used this way so that same images are actually the same image to compare later
+            images.add(image1);                                                       // had to add "src//" and remove "image"
             images.add(image2);
         }
         Collections.shuffle(images);
@@ -72,31 +67,31 @@ public class Memory extends JFrame implements ActionListener {
 
         for (int j = 0; j < panels.length; j++) {
             if (buttons[j] == button) {
-                buttons[j].setIcon(images.get(j)); // It works!
-                imagine.add(images.get(j)); // adding to the list of comparison
-                openCards.add(j);  // we add the button position
+                buttons[j].setIcon(images.get(j));                                         // It works!
+                imagine.add(images.get(j));                                          // adding to the list of comparison
+                openCards.add(j);                                                    // we add the button position to replace image if not a pair
 
             }
-            if(openCards.size()==3){
+            if(openCards.size()==3){                                                 //needs to happen on the 3rd card open,otherwise player never sees the 2nd card
                 if(imagine.get(1).equals(imagine.get(0))) {
                     correct++;
                 }
                 else if(!imagine.get(0).equals(imagine.get(1))){
                     wrong++;
-                    buttons[openCards.get(1)].setIcon(new ImageIcon("src//0.png"));
+                    buttons[openCards.get(1)].setIcon(new ImageIcon("src//0.png"));         // replacing images again if not a pair
                     buttons[openCards.get(0)].setIcon(new ImageIcon("src//0.png"));
                 }
-                openCards.remove(1);
+                openCards.remove(1);                                                        //clearing first 2 spots on the new Arrays so that we can start over
                 openCards.remove(0);
                 imagine.remove(1);
                 imagine.remove(0);
-                System.out.println("You found " + correct + " pairs!");
+                System.out.println("You found " + correct + " pairs!");                            // for us to know what's happening
                 System.out.println("You made " + wrong + " mistakes!");
 
-                if(wrong==5){
+                /*if(wrong==5){                                                                  // thought about creating funny loserpage and winnerpage
                     frame.dispose();
                     LoserPage loserpage = new LoserPage();
-                }
+                }*/
             }
         }
     }
