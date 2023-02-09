@@ -1,0 +1,89 @@
+import java.io.IOException;
+
+public class WinnerPage extends JFrame implements ActionListener {
+    JFrame frame = new JFrame();
+    JLabel label1 = new JLabel();
+    JLabel label2 = new JLabel();
+    JButton button1 = new JButton();
+    JButton button2 = new JButton();
+
+    File file1;
+    File file2;
+    Clip clip1;
+    Clip clip2;
+
+    JLayeredPane layeredPane = new JLayeredPane();
+
+    WinnerPage() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+        frame.setSize(1024, 1024);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setTitle("MEMORY GAME");
+        frame.setIconImage(new ImageIcon("src//0.png").getImage());
+        frame.setResizable(false);
+
+        file1 = new File("src//akivernito.wav");
+        AudioInputStream audioStream1 = AudioSystem.getAudioInputStream(file1);
+        clip1 = AudioSystem.getClip();
+        clip1.open(audioStream1);
+        clip1.start();
+
+        file2 = new File("src//screams.wav");
+        AudioInputStream audioStream2 = AudioSystem.getAudioInputStream(file2);
+        clip2 = AudioSystem.getClip();
+        clip2.open(audioStream2);
+
+        label1.setBounds(0, 0, 1024, 200);
+        label1.setBackground(Color.BLACK);
+        label1.setText("        Congratulations! But,someone is hiding inside the ship!");
+        label1.setFont(new Font("MV Boli", Font.BOLD, 24));
+        label1.setForeground(new Color(60, 116, 107));
+        label1.setOpaque(true);
+
+
+        label2.setBounds(0, 200, 1024, 824);
+        label2.setOpaque(true);
+        label2.setIcon(new ImageIcon("src//ship.jpg"));
+        frame.add(label2);
+
+        button1.setBounds(800, 80, 170, 50);
+        button1.setText("Who?");
+        button1.setBackground(new Color(60, 116, 107));
+        button1.setForeground(Color.white);
+        button1.setFont(new Font("MV Boli", Font.BOLD, 24));
+        button1.setFocusable(false);
+        button1.setBorderPainted(false);
+        button1.addActionListener(this);
+
+
+        button2.setBounds(800, 80, 170, 50);
+        button2.setText("QUIT");
+        button2.setBackground(new Color(60, 116, 107));
+        button2.setForeground(Color.white);
+        button2.setFont(new Font("MV Boli", Font.BOLD, 24));
+        button2.setFocusable(false);
+        button2.setBorderPainted(false);
+        button2.addActionListener(this);
+
+        layeredPane.setBounds(0, 0, 1024, 200);
+        layeredPane.add(label1, Integer.valueOf(0));
+        layeredPane.add(button1, Integer.valueOf(1));
+        frame.add(layeredPane);
+        frame.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == button1){
+            label2.setIcon(new ImageIcon("src//sheep.jpg"));
+            label1.setText("         Thank you for playing our game!");
+            layeredPane.remove(button1);
+            layeredPane.add(button2);
+            clip1.stop();
+            clip2.start();
+        }
+        if (e.getSource()==button2){
+            System.exit(0);
+        }
+    }
+}
